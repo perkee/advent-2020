@@ -2,6 +2,7 @@ module D01 exposing (main)
 
 import Array
 import Browser
+import Dict
 import Html as H
 import Html.Attributes as HA
 import Html.Events as HE
@@ -60,17 +61,7 @@ processInput s =
                 ++ part2 ints
 
         Err errs ->
-            List.map renderErr errs |> String.join "\n"
-
-
-renderErr : P.DeadEnd -> String
-renderErr { row, problem, col } =
-    case problem of
-        P.ExpectingSymbol s ->
-            "Incomplete row " ++ String.fromInt row ++ " at col " ++ String.fromInt col ++ ": expecting symbol " ++ s
-
-        _ ->
-            Debug.toString problem
+            List.map Debug.toString errs |> String.join "\n"
 
 
 statements : Parser (List Int)
@@ -124,20 +115,46 @@ find predicate list =
 
 part2 : List Int -> String
 part2 list =
-    --- terrible performance n^3
-    case find filter2 <| LE.lift3 addAndMult list list list of
-        Just ( _, prod ) ->
+    let
+        sumToProd =
+            -- reduces complexity to O(n*2)ish, probably O(n*2*log n)
+            -- compared to lift3
+            -- in practice it goes from a long wait to instant
+            Dict.fromList <| LE.lift2 addAndMult list list
+    in
+    case findButCooler (filter2 sumToProd) <| list of
+        Just prod ->
             String.fromInt prod
 
         Nothing ->
             "???"
 
 
-filter2 : ( Int, Int ) -> Bool
-filter2 ( sum, _ ) =
-    sum == 2020
+filter2 : Dict.Dict Int Int -> Int -> Maybe Int
+filter2 sumToProd n =
+    case Dict.get (2020 - n) sumToProd of
+        Just prod ->
+            Just (n * prod)
+
+        Nothing ->
+            Nothing
 
 
-addAndMult : Int -> Int -> Int -> ( Int, Int )
-addAndMult a b c =
-    ( a + b + c, a * b * c )
+addAndMult : Int -> Int -> ( Int, Int )
+addAndMult a b =
+    ( a + b, a * b )
+
+
+findButCooler : (a -> Maybe b) -> List a -> Maybe b
+findButCooler predicate list =
+    case list of
+        l :: ls ->
+            case predicate l of
+                Just b ->
+                    Just b
+
+                Nothing ->
+                    findButCooler predicate ls
+
+        [] ->
+            Nothing

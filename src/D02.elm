@@ -1,4 +1,4 @@
-module D02 exposing (..)
+module D02 exposing (main)
 
 import Array
 import Browser
@@ -29,7 +29,7 @@ type alias PasswordsResult =
 main : Program () String Msg
 main =
     Browser.element
-        { init = \() -> ( String.trim input, Cmd.none )
+        { init = \() -> ( "paste your input here", Cmd.none )
         , update = update
         , subscriptions = \_ -> Sub.none
         , view = view
@@ -166,14 +166,3 @@ validate2 start end c pw =
 
         _ ->
             Invalid
-
-
-reloop : List b -> b -> P.Step (List b) a
-reloop revStmts stmt =
-    P.Loop (stmt :: revStmts)
-
-
-input : String
-input =
-    """
-"""

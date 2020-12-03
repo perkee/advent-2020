@@ -1,6 +1,5 @@
 module D01 exposing (main)
 
-import Array
 import Browser
 import Dict
 import Html as H
@@ -11,21 +10,12 @@ import Parser as P exposing ((|.), (|=), Parser)
 import Set
 
 
-type PasswordResult
-    = Valid
-    | Invalid
-
-
 type alias Model =
     String
 
 
 type Msg
     = InputChanged String
-
-
-type alias PasswordsResult =
-    ( PasswordResult, PasswordResult )
 
 
 main : Program () String Msg
@@ -132,12 +122,8 @@ part2 list =
 
 filter2 : Dict.Dict Int Int -> Int -> Maybe Int
 filter2 sumToProd n =
-    case Dict.get (2020 - n) sumToProd of
-        Just prod ->
-            Just (n * prod)
-
-        Nothing ->
-            Nothing
+    Dict.get (2020 - n) sumToProd
+        |> Maybe.map ((*) n)
 
 
 addAndMult : Int -> Int -> ( Int, Int )

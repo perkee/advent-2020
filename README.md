@@ -18,6 +18,6 @@ console.log(
   'part1',
   trees[3],
   'part2',
-  trees.reduce((p, n) => n ? p * n : p, 1)
+  trees.reduce((p, n) => p * n)
 );
 ```

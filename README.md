@@ -6,18 +6,18 @@ Solutions to [Advent of Code 2020](https://adventofcode.com/2020)
 
 ```javascript
 const rows = $0.innerText.trim().split('\n');
-const trees3 = rows.reduce((sum,row,i) => sum + (row[(i * 3) % row.length] == '#'), 0);
-console.log('part1', trees3);
-let trees1 = 0, trees5 = 0, trees7 = 0, trees2 = 0;
-const  getCol = (n, i) => ((i * n) % (rows[0].length));
-for (let i = 0; i < rows.length; ++i) { 
-  if (rows[i][getCol(1,i)] == '#') ++trees1;
-  if (rows[i][getCol(5,i)] == '#') ++trees5;
-  if (rows[i][getCol(7,i)] == '#') ++trees7;
-
-};
-for (let i = 0; i < rows.length; i+=2) {
-  if (rows[i][(i/2) % (rows[0].length)] == '#') ++trees2;
-};
-console.log('part2', trees1 * trees2 * trees3 * trees5 * trees7);
+const getCol = (n, i) =>
+	((i * n) % (rows[0].length));
+const getCel = (v, h, i) => 
+	(rows[i * v] || [])[ getCol(h, i) ] == '#';
+const slopes = '11,13,15,17,21'.split(',').map(s => s.split(''));
+const trees = slopes.map(([rise, run]) => 
+  rows.reduce((count, _, i) => count + getCel(rise, run, i), 0)
+);
+console.log(
+  'part1',
+  trees[3],
+  'part2',
+  trees.reduce((p, n) => n ? p * n : p, 1)
+);
 ```

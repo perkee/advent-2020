@@ -1,5 +1,22 @@
 module D02 exposing (main)
 
+{--
+// This assumes that you navigate to the input page, select the <pre>
+// element in the inspector, and then move over to the console
+
+const input = $0.innerText.trim().split('\n').map(line => line.split(/:? |-/));
+// a line like "4-7 z: zzzfzlzzz" is now ["4", "7", "z", "zzzfzlzzz"]
+let isValid = ([min, max, char, pw]) => {
+  const l = (pw.match(new RegExp(char, 'g')) ||[]).length;
+  return l >= min && l <= max;
+}
+console.log("part 1", input.filter(isValid).length);
+isValid = ([min, max, char, pw]) => (pw[min-1] == char) ^ (pw[max-1] == char);
+// ^ is bitwise XOR which will coerce the booleans on either side from
+// true/false to 1/0 which is fine for Array.prototype.filter
+console.log("part 2", input.filter(isValid).length);
+--}
+
 import Array
 import Browser
 import Html as H

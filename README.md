@@ -8,7 +8,7 @@ For everything but day 1 the JS is in a comment in the elm
 4. https://ellie-app.com/bJycmLbmvGka1 JS
 5.
 
-    ```javascript
+```javascript
 const seats = $0.innerText
   .trim()
   .split('\n')

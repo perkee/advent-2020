@@ -8,4 +8,6 @@ For everything but day 1 the JS is in a comment in the elm
 4. https://ellie-app.com/bJycmLbmvGka1
 5. https://ellie-app.com/bKhWrLkghYLa1
 6. https://ellie-app.com/bKGRxw8Nscja1
-
+7. this one is hard
+8. js only for now
+9. js only for now
